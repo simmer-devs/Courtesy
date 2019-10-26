@@ -15,6 +15,7 @@ export default class settings implements IBotCommand{
     }
     
     async runCommand(args: string[], message: Discord.Message, client: Discord.Client, settings: any): Promise<void> {
+        message.delete()
         if(message.author.id === message.guild.owner.id){
             const setting = args[0]
             const settingUpdate = args.slice(1).join(' ')
