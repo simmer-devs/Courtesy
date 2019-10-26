@@ -1,5 +1,7 @@
+require('dotenv').config({path: '../.env'})
+
 export let config = {
-    "token": "",
+    "token": process.env.TOKEN,
     "commands": [
       "test",
       "emit",
