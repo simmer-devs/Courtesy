@@ -1,5 +1,5 @@
 import * as Discord from "discord.js"
-import * as ConfigFile from "../config" //need this for badwords[] defaults eventually
+import { handleImageAttachment, handleImageLink } from "../Handlers/imageModerator"
 const { client } = require("../index")
 const { handleCommand, loadCommands } = require('../Handlers/commandHandler')
 const { getGuild } = require('../Handlers/dbFunctions')
@@ -17,7 +17,21 @@ client.on('message', async (message: Discord.Message) => {
         console.log(err)
     }
 
+    //handling command
     if(message.content.startsWith(settings.prefix)) { handleCommand(message, settings) };
-
     
+    //image moderation from direct attachments
+    let attachmentArray = message.attachments.array()
+    if(!attachmentArray) return;
+    handleImageAttachment(attachmentArray, settings, message.guild)
+    
+    //image moderation from links in message content
+    let msgArray = message.content.split(" ")
+    let urlsArray = [] as string[]
+    msgArray.forEach(msg => {
+        if(msg.startsWith('https://') || msg.startsWith('http://')){
+            urlsArray.push(msg)
+        }
+    })
+    if(urlsArray[0] !== undefined) { handleImageLink(urlsArray, message.guild, settings, message) }
 })
