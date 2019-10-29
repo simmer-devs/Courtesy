@@ -1,13 +1,13 @@
 import * as Discord from 'discord.js'
 import * as ConfigFile from "../config"
-const Guild = require('../Models/dbSchema')
+const Guild = require('../Models/guildSchema')
 const mongoose = require('mongoose')
 
-/*
-*
+/***
+**
 * Create, Read, Update and Delete functions to be used for the guildSchema 
-*
-*/
+**
+***/
 
 //search for guild
 export const getGuild = async (guild: Discord.Guild) => {
@@ -38,4 +38,35 @@ export const createGuild = async (settings: any) => {
 
     const newGuild = await new Guild(merged)
     return newGuild.save().then(console.log(`Default settings saved for guild '${merged.guildName}' (${merged.guildID})`))
+}
+
+//delete guild
+export const deleteGuild = async (guild: Discord.Guild) => {
+    await Guild.deleteOne({ guildID: guild.id}).then(console.log(`Guild '${guild.name} settings deleted.`))
+}
+
+//delete badWord if it is currently censored
+export const deleteBadword = async (badWord: string, guild: Discord.Guild, settings: any) => {
+    let badWordsArray = settings.badWords as string[]
+    for(let i = 0; i < badWordsArray.length; i++){
+        if(badWordsArray[i] === badWord){
+            badWordsArray.splice(i, 1)
+        }
+    }
+    
+    try {
+        const guildUpdate = {
+            guildID: guild.id,
+            guildName: guild.name,
+            prefix: settings.prefix,
+            badWords: badWordsArray
+        };
+
+        await Guild.findOneAndReplace(
+            {guildID: guild.id},
+            guildUpdate
+        )
+    }catch(err){
+        console.log(err)
+    }
 }
