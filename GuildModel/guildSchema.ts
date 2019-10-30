@@ -12,7 +12,12 @@ const guildSchema = new mongoose.Schema({
     badWords: {
         type: [],
         default: ConfigFile.config.badWords
-    }
+    },
+    spamFilter: Number
 })
 
+
+
 module.exports = mongoose.model('Guild', guildSchema)
+
+
