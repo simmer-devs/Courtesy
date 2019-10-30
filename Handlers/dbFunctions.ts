@@ -1,6 +1,6 @@
 import * as Discord from 'discord.js'
 import * as ConfigFile from "../config"
-const Guild = require('../Models/guildSchema')
+const Guild = require('../GuildModel/guildSchema')
 const mongoose = require('mongoose')
 
 /***
@@ -70,3 +70,4 @@ export const deleteBadword = async (badWord: string, guild: Discord.Guild, setti
         console.log(err)
     }
 }
+
