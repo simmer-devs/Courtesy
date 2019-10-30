@@ -1,29 +1,50 @@
 import * as Discord from "discord.js"
 import { handleImageAttachment, handleImageLink } from "../Handlers/imageModerator"
+import { handleText } from "../Handlers/textModerator"
 const { client } = require("../index")
 const { handleCommand, loadCommands } = require('../Handlers/commandHandler')
 const { getGuild } = require('../Handlers/dbFunctions')
+const { handleSpam } = require('../Handlers/spamHandler')
+const { getMember } = require('../Handlers/memberFunctions')
+
 
 loadCommands(`../Commands`)
 
 client.on('message', async (message: Discord.Message) => {
+    
+    
     if(message.author.bot) return;
     if(message.channel.type === 'dm') return;
 
-    let settings;
+    let guildSettings;
     try{
-        settings = await getGuild(message.guild)
+        guildSettings = await getGuild(message.guild)
     }catch(err){
         console.log(err)
     }
+    
+    let memberSettings;
+    try{
+        memberSettings = await getMember(message.guild, message.member)
+    } catch(err){
+        console.log(err)
+    }
+
+    //run anti spam
+    handleSpam(message, message.guild, memberSettings, guildSettings)
 
     //handling command
-    if(message.content.startsWith(settings.prefix)) { handleCommand(message, settings) };
+    if(message.content.startsWith(guildSettings.prefix)) { 
+        await handleText(message, guildSettings)
+        handleCommand(message, guildSettings) 
+    }
+    //normal messages
+    handleText(message, guildSettings)
     
     //image moderation from direct attachments
     let attachmentArray = message.attachments.array()
     if(!attachmentArray) return;
-    handleImageAttachment(attachmentArray, settings, message.guild)
+    handleImageAttachment(attachmentArray, guildSettings, message.guild)
     
     //image moderation from links in message content
     let msgArray = message.content.split(" ")
@@ -33,5 +54,5 @@ client.on('message', async (message: Discord.Message) => {
             urlsArray.push(msg)
         }
     })
-    if(urlsArray[0] !== undefined) { handleImageLink(urlsArray, message.guild, settings, message) }
+    if(urlsArray[0] !== undefined) { handleImageLink(urlsArray, message.guild, guildSettings, message) }
 })
