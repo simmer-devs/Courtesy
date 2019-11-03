@@ -12,7 +12,6 @@ loadCommands(`../Commands`)
 
 client.on('message', async (message: Discord.Message) => {
     
-    
     if(message.author.bot) return;
     if(message.channel.type === 'dm') return;
 
@@ -22,7 +21,7 @@ client.on('message', async (message: Discord.Message) => {
     }catch(err){
         console.log(err)
     }
-    
+
     let memberSettings;
     try{
         memberSettings = await getMember(message.guild, message.member)
@@ -35,7 +34,7 @@ client.on('message', async (message: Discord.Message) => {
 
     //handling command
     if(message.content.startsWith(guildSettings.prefix)) { 
-        await handleText(message, guildSettings)
+        handleText(message, guildSettings)
         handleCommand(message, guildSettings) 
     }
     //normal messages
