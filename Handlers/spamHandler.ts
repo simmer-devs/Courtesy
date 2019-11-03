@@ -3,20 +3,11 @@ const Member = require('../MemberModel/memberSchema')
 const mongoose = require('mongoose')
 
 export const handleSpam = async (message: Discord.Message, guild: Discord.Guild, memberSettings: any, guildSettings: any) => {
-    //if memberSettings.spamming.length === guildSettings.spamFilter delete msg else update 
-    if(memberSettings.spamming.length === guildSettings.spamFilter){
+    mongoose.set('useFindAndModify', false) 
+    if(memberSettings.spamming.length >= guildSettings.spamFilter){
+        //log spamming/ban instance to moderation channel
         message.delete()
-        //update the database to empty spam filter after xx seconds with set timeout
-        setTimeout(async () => {
-            const memberUpdate = {
-                spamming: []
-            }
-
-            await Member.findOneAndUpdate(
-                {userID: message.member.user.id, guildID: guild.id},
-                memberUpdate
-            )
-        }, 10)
+        message.member.ban({days: 7, reason: 'Spamming.'}).catch(err => console.log(err))
         return
     }
 
