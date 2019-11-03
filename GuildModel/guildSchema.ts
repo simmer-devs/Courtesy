@@ -13,7 +13,8 @@ const guildSchema = new mongoose.Schema({
         type: [],
         default: ConfigFile.config.badWords
     },
-    spamFilter: Number
+    spamFilter: Number,
+    reports: []
 })
 
 
