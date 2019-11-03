@@ -6,7 +6,11 @@ export let config = {
       "test",
       "settings",
       "kick",
-      "ban"
+      "ban",
+      "hackban",
+      "tempban",
+      "report",
+      "help"
     ],
     "defaultSettings": {
       prefix: '!',
@@ -14,12 +18,18 @@ export let config = {
       welcomeChannel: 'welcome',
       welcomeMsg: 'Welcome {{user}} to {{guild}}!',
       modRole: 'Moderator',
-      adminRole: 'Administrator'
+      adminRole: 'Administrator',
+      reports: []
     },
     "memberDefaultSettings": {
       spamming: []
     },
+    "reportDefaultSettings": {
+      Title:'',
+      Description: ''
+    },
     "badWords": [
-      'nigger'
+      'nigger',
+      'faggot'
     ] 
 }
