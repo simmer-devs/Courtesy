@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 import {IBotCommand} from "../api";
-import { updateGuild, deleteBadword } from "../Handlers/dbFunctions";
+import { updateGuild, deleteBadword } from "../Handlers/guildFunctions";
 
 export default class settings implements IBotCommand{
     
@@ -17,8 +17,15 @@ export default class settings implements IBotCommand{
     async runCommand(args: string[], message: Discord.Message, client: Discord.Client, settings: any): Promise<void> {
         message.delete()
         if(message.author.id === message.guild.owner.id){
-            const setting = args[0]
-            const settingUpdate = args.slice(1).join(' ')
+            //undefined checks for {prefix}settings command
+            if(args[0] === undefined){
+                //include a current settings embed here showing the values of available settings that can be updated, prefix, badwords, spamFilter etc
+                message.channel.send('Please provide a setting to view/update')
+                return
+            }
+            const setting = args[0].toLowerCase()
+            const settingUpdate = args.slice(1).join(' ').toLowerCase()
+            
             switch(setting){
                 case 'prefix': {
                     if(!settingUpdate){
@@ -35,7 +42,7 @@ export default class settings implements IBotCommand{
                 }
                 case 'censor': {
                     if(!settingUpdate){
-                        message.channel.send(`Current censored words: ||${settings.badWords}||`)
+                        message.channel.send(`Current censored words: ||${settings.badWords.join(', ')}||`)
                         return;
                     }
                     try{
@@ -45,7 +52,7 @@ export default class settings implements IBotCommand{
                     }
                     break;
                 }
-                case 'censorRemove': {
+                case 'censorremove': {
                     if(!settingUpdate){
                         message.channel.send(`Please include a currently censored word to remove. Use '${settings.prefix}settings censor' to see a list of currently censored words.`)
                         return;
@@ -57,11 +64,18 @@ export default class settings implements IBotCommand{
                         console.log(err)
                     }
                 }
-                default: {
-                    message.channel.send('Please provide a setting to view/update')
-                    break;
-                } 
+                case 'spamfilter': {
+                    if(!settingUpdate){
+                        console.log(settings)
+                        message.channel.send(`The current spam filter for this server is ${settings.spamFilter} messages in 10 seconds`)
+                        return
+                    }
+                    //implement update spamfilter if setting update is provided, requires findoneandupdate
+                }
             }
+        }
+        else{
+            message.reply('you are not the server owner!').then(m => (m as Discord.Message).delete(5000))
         }
     }
 }
