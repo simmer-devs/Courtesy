@@ -4,9 +4,8 @@ const { client } = require("../index")
 const request = require('request')
 const fs = require('fs')
 const path = require('path')
-const fetch = require('node-fetch')
 
-export const handleImageAttachment = (attachment: Discord.MessageAttachment[]/* image url to be analyzed */, settings: any/* Guild settings from getGuild in msg event */, guild: Discord.Guild) => {
+export const handleImageAttachment = (attachment: Discord.MessageAttachment[], guildSettings: any, guild: Discord.Guild) => {
     let modChannel = guild.channels.find(ch => ch.name === 'courtesy-log') as Discord.TextChannel
     
     const worker = createWorker()
@@ -23,12 +22,12 @@ export const handleImageAttachment = (attachment: Discord.MessageAttachment[]/* 
         
         let {data: {text}} = await worker.recognize(image)
 
-        for(const key in settings.badWords){
-            if(text.includes(settings.badWords[key])){
-                a.message.delete()
+        for(const key in guildSettings.badWords){
+            if(text.toLowerCase().includes(guildSettings.badWords[key])){
+                a.message.delete().catch(err => console.log(err))
                 let modEmbed = new Discord.RichEmbed()
                     .setColor([206, 145, 190])
-                    .setTitle("**__Courtesy: Image Moderator Report__**")
+                    .setTitle("__Courtesy: Image Moderator Report__")
                     .setAuthor('Courtesy', client.user.avatarURL)
                     .setDescription(`**Violation by <@${a.message.author.id}>**\nOriginating Channel: ${a.message.channel}\nModerated Image: `)
                     .attachFiles([`../images/${a.id}.png`])
@@ -50,7 +49,7 @@ const validateUrl = (url: string) => {
     return(url.match(/\.(jpeg|jpg|gif|png)$/) != null)
 }
 
-export const handleImageLink = async (urls: string[], guild: Discord.Guild, settings: any, message: Discord.Message) => {
+export const handleImageLink = async (urls: string[], guild: Discord.Guild, guildSettings: any, message: Discord.Message) => {
     let modChannel = guild.channels.find(ch => ch.name === 'courtesy-log') as Discord.TextChannel
 
     const worker = createWorker()
@@ -58,8 +57,7 @@ export const handleImageLink = async (urls: string[], guild: Discord.Guild, sett
         let randNum = Math.floor(Math.random()*1000000)
     
         //validate the url for .jpeg .jpg .png or .gif at the end of the string else return
-        let validate = validateUrl(url)
-        if(validate === false) return
+        if(validateUrl(url) === false) return
     
         request.get(url)
             .on('error', console.error)
@@ -73,12 +71,12 @@ export const handleImageLink = async (urls: string[], guild: Discord.Guild, sett
 
         let {data: {text}} = await worker.recognize(image)
     
-        for(const key in settings.badWords){
-            if(text.includes(settings.badWords[key])){
-                message.delete()
+        for(const key in guildSettings.badWords){
+            if(text.includes(guildSettings.badWords[key])){
+                message.delete().catch(err => console.log(err))
                 let modEmbed = new Discord.RichEmbed()
                     .setColor([206, 145, 190])
-                    .setTitle("**__Courtesy: Image Moderator Report__**")
+                    .setTitle("__Courtesy: Image Moderator Report__")
                     .setAuthor('Courtesy', client.user.avatarURL)
                     .setDescription(`**Violation by <@${message.author.id}>**\nOriginating Channel: ${message.channel}\nModerated Image: `)
                     .attachFiles([`../images/${randNum}.png`])
