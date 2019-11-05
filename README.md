@@ -1,7 +1,7 @@
 # Courtesy 
 
-## Description:
+### Description:
 
-## Commands:
+### Commands:
 
-## Invite Me!
+### Invite Me!
