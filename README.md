@@ -23,11 +23,11 @@ This command is used to change the server prefix, the spam filter and the list o
 
 | Command | Usage | Functionality |
 |:--------|:------|:--------------|
-| Current Prefix | 
-| Set Prefix |
-| Current Censored Words |
-| Add Censored Word |
-| Remove Censored Word | 
+| Current Prefix | !settings prefix |
+| Set Prefix | !settings prefix < newPrefix > |
+| Current Censored Words | !settings censor |
+| Add Censored Word | !settings censor < word > |
+| Remove Censored Word | !settings censorRemove < word > |
 
 ---
 
@@ -35,9 +35,10 @@ This command is used to change the server prefix, the spam filter and the list o
 
 ---
 
-### To Do:
+### Planned Features:
 - Fix small image size crash issue
 - Include functionality to allow opt-in/opt-out of spam filter
+- Allow for image attachment step during report creation
 
 
 ---
