@@ -17,8 +17,8 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
 | Kick | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/kickUsage.PNG) | Kicks the mentioned user. Reason may be included (optional). 'Kick Members' permissions required. |
 
 ### To Do:
-[x] Fix small image size crash issue
-[x] Include functionality to allow opt-in/opt-out of spam filter 
+- Fix small image size crash issue
+- Include functionality to allow opt-in/opt-out of spam filter 
 ### Invite Me!
 
 ### Bug Reports & Support:
