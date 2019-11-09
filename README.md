@@ -9,7 +9,7 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
 
 ---
 
-### Commands:
+## Commands:
 | Command | Usage | Functionality |
 |:--------|:------|:--------------|
 | Ban | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/banUsage.PNG) | Bans the mentioned user indefinitely. Reason may be included (optional). 'Ban Members' permissions required. |
@@ -18,7 +18,7 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
 | Kick | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/kickUsage.PNG) | Kicks the mentioned user. Reason may be included (optional). 'Kick Members' permissions required. |
 | Report | !report | Initiates a report to the author's DM's, sent to server Administrators upon confirmation. |
 
-##### Settings Command Usage
+### Settings Command Usage:
 This command is used to change the server prefix, the spam filter and the list of censored words and phrases. Currently this command is only usable by the server owner.
 
 | Command | Usage | Functionality |
