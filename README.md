@@ -16,6 +16,7 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
 | Hackban | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/hackbanUsage.PNG) | Bans the user by ID before they are able to join the server. Reason may be included (optional). Administrator permissions required. |
 | Tempban | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/tempbanUsage.PNG) | Bans the mentioned user for the length of time specified in days. Reason may be included (optional). 'Ban Members' permissions required. |
 | Kick | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/kickUsage.PNG) | Kicks the mentioned user. Reason may be included (optional). 'Kick Members' permissions required. |
+| Purge | !purge # | Bulk deletes the indicated number of messages from the channel. |
 | Report | !report | Initiates a report to the author's DM's, sent to server Administrators upon confirmation. |
 
 ### Settings Command Usage:
