@@ -10,6 +10,7 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
 
 ### Commands:
 | Command | Usage | Functionality |
+|:--------|:------|:--------------|
 | Ban | !ban <@user> <reason> | Bans the mentioned user indefinitely. Reason may be included (optional) |
 | Hackban | !hackban <userID> <reason> | Bans the user by ID before they are able to join the server. Reason may be included (optional) |
 | Tempban | !tempban <@user> <timeInDays> <reason> | Bans the mentioned user for the length of time specified in days. Reason may be included (optional) |
