@@ -6,7 +6,7 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
  - Multiple permission based moderation commands
  - Private 'report to server administration' system
  - Spam handling functionality
- - Customizable guild settings including: Prefix, Spam Filter, Censored Words/Phrases
+ - Customizable guild settings including: Prefix (the default is '!'), Spam Filter, Censored Words/Phrases
 
 ### Commands:
 | Command | Usage | Functionality |
@@ -15,6 +15,7 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
 | Hackban | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/hackbanUsage.PNG) | Bans the user by ID before they are able to join the server. Reason may be included (optional). Administrator permissions required. |
 | Tempban | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/tempbanUsage.PNG) | Bans the mentioned user for the length of time specified in days. Reason may be included (optional). 'Ban Members' permissions required. |
 | Kick | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/kickUsage.PNG) | Kicks the mentioned user. Reason may be included (optional). 'Kick Members' permissions required. |
+| Report | 
 
 ### To Do:
 - Fix small image size crash issue
