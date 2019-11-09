@@ -8,6 +8,8 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
  - Spam handling functionality
  - Customizable guild settings including: Prefix (the default is '!'), Spam Filter, Censored Words/Phrases
 
+---
+
 ### Commands:
 | Command | Usage | Functionality |
 |:--------|:------|:--------------|
@@ -15,12 +17,20 @@ Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Som
 | Hackban | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/hackbanUsage.PNG) | Bans the user by ID before they are able to join the server. Reason may be included (optional). Administrator permissions required. |
 | Tempban | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/tempbanUsage.PNG) | Bans the mentioned user for the length of time specified in days. Reason may be included (optional). 'Ban Members' permissions required. |
 | Kick | ![](https://raw.githubusercontent.com/simmer-devs/ER-Bot/master/Images/kickUsage.PNG) | Kicks the mentioned user. Reason may be included (optional). 'Kick Members' permissions required. |
-| Report | 
+| Report |
+
+---
 
 ### To Do:
 - Fix small image size crash issue
-- Include functionality to allow opt-in/opt-out of spam filter 
+- Include functionality to allow opt-in/opt-out of spam filter
+
+---
+
 ### Invite Me!
+
+
+---
 
 ### Bug Reports & Support:
 Join our Discord server to submit suggestions for Courtesy, or for support on using the bot for your community!
