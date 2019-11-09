@@ -2,11 +2,11 @@
 
 ### Description:
 Hello, i'm Courtesy, a fully customizable Discord Server moderation package. Some of my features include:
-&nbsp; &nbsp; &nbsp; - Text and basic image moderation (Yes, images too!)
-&nbsp; &nbsp; &nbsp; - Multiple permission based moderation commands
-&nbsp; &nbsp; &nbsp; - Private 'report to server administration' system
-&nbsp; &nbsp; &nbsp; - Spam handling functionality
-&nbsp; &nbsp; &nbsp; - Customizable guild settings including: Prefix, Spam Filter, Censored Words/Phrases
+ - Text and basic image moderation (Yes, images too!)
+ - Multiple permission based moderation commands
+ - Private 'report to server administration' system
+ - Spam handling functionality
+ - Customizable guild settings including: Prefix, Spam Filter, Censored Words/Phrases
 
 ### Commands:
 | Command | Usage | Functionality |
