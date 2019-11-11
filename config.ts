@@ -9,8 +9,12 @@ export let config = {
       "ban",
       "hackban",
       "tempban",
+      "purge",
       "report",
-      "help"
+      "pullreport",
+      "closereport",
+      "totalreports",
+      "help",
     ],
     "defaultSettings": {
       prefix: '!',
