@@ -22,10 +22,19 @@ export const getReport = async (message: Discord.Message, reportNumber: Number) 
     else return ConfigFile.config.reportDefaultSettings
 }
 
+export const getGuildReportByID = async (message: Discord.Message, reportNumber: Number) => {
+    let data = await Report.findOne({reportNumber: reportNumber, guildID: message.guild.id})
+    if(data) { return data }
+    else return 'No report found.'
+}
+
+export const pullReports = async (message: Discord.Message) => {
+    let data = await Report.find({guildID: message.guild.id})
+    if(data){ return data }
+}
+
 export const updateReportTitle = async (message: Discord.Message, reportNumber: Number, update: any) => {
     mongoose.set('useFindAndModify', false)
-
-    let data = getGuild(message.guild)
 
     let reportUpdate = {
         Title: update
@@ -54,6 +63,10 @@ export const deleteReport = async (message: Discord.Message, reportNumber: Numbe
     await Report.deleteOne(
         {reportNumber: reportNumber, guildID: message.guild.id, userID: message.author.id}
     )
+}
+
+export const deleteGuildReportByID = async (message: Discord.Message, reportNumber: Number) => {
+    await Report.deleteOne({reportNumber: reportNumber, guildID: message.guild.id})
 }
 
 export const buildReport = async (message: Discord.Message, reportNumber: Number) => {
@@ -88,11 +101,7 @@ export const buildReport = async (message: Discord.Message, reportNumber: Number
                         .setColor([206, 145, 190])
                         .setTitle(`Confirmation of Report to Server: '${message.guild.name}'`)
                         .setAuthor('Courtesy', client.user.avatarURL)
-                        .setDescription(`You have provided the following information for your report: 
-                                        Title: ${res.content}
-                                        Body: ${result.content}
-                                        
-                                        Do you wish to confirm this information and send it to server administrators? To confirm react with ✅. If you wish to adjust this information please react with ❎, this will cancel the process and you will need to use the Report Command again.`)
+                        .setDescription(`You have provided the following information for your report:\n\n**__Title:__** ${res.content}\n\n**__Body:__** ${result.content}\n\n\nDo you wish to confirm this information and send it to server administrators? To confirm react with ✅. If you wish to adjust this information please react with ❎, this will cancel the process and you will need to use the report command again.`) 
 
                     message.author.send(confirm).then(async m => {
                         let confirmation = m as Discord.Message
@@ -109,19 +118,26 @@ export const buildReport = async (message: Discord.Message, reportNumber: Number
                                 case '✅': {
                                     let adminNotification = new Discord.RichEmbed()
                                         .setColor([206, 145, 190])
-                                        .setTitle(`Report Submitted by Server Member: ${message.member.user.tag}`)
                                         .setAuthor('Courtesy', client.user.avatarURL)
-                                        .setDescription(`Title: ${res.content}
-                                                        Body: ${result.content}`)
+                                        .setDescription(`**Report#${reportNumber} Submitted by: ${message.member.user}**\n\n__**Title:**__ ${res.content}\n\n__**Body:**__ ${result.content}`)
                                     reportChannel.send(adminNotification)
+                                    
+                                    let sentNotification = new Discord.RichEmbed()
+                                        .setColor([206, 145, 190])
+                                        .setTitle("Report Sent")
+                                        .setAuthor('Courtesy', client.user.avatarURL)
+                                        .setDescription(`Your report has successfully been sent to '${message.guild.name}' Discord Server Administration.`)
+                                        .setFooter('Thank you!')
+                                    reactRes.message.edit(sentNotification)
+                                        
                                     break;
                                 }
                                 case '❎': {
                                     //also potentially allow for message attachments to be included in the report?
                                     let guildSettings = await getGuild(message.guild)
-                                    console.log(guildSettings.reports)
-                                    let abcdefg = guildSettings.reports.shift()
-                                    console.log(guildSettings.reports)
+
+                                    //decerement the size of the reports array for guild report counter
+                                    guildSettings.reports.shift()
 
                                     let reportArrayUpdate = {
                                         reports: guildSettings.reports
@@ -132,6 +148,13 @@ export const buildReport = async (message: Discord.Message, reportNumber: Number
                                         reportArrayUpdate
                                     )
                                     await deleteReport(message, reportNumber)
+                                    
+                                    let cancelEmbed = new Discord.RichEmbed()
+                                        .setColor([206, 145, 190])
+                                        .setTitle(`Report Cancelled`)
+                                        .setAuthor('Courtesy', client.user.avatarURL)
+                                        .setDescription(`Please use the report command in the '${message.guild.name}' Discord Server if you wish to initiate a new report.`)
+                                    reactRes.message.edit(cancelEmbed)
                                     return;
                                 }
                             }
