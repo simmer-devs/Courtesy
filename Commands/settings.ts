@@ -6,8 +6,8 @@ export default class settings implements IBotCommand{
     
     private readonly _command = "settings"
     
-    help(): string {
-        return "This command does absolutely nothing! :-)"
+    help(): string[] {
+        return [this._command,"Allows the server owner to customize the server prefix, spam filter and censor list."]
     }    
     
     isThisCommand(command: string): boolean {
@@ -19,8 +19,7 @@ export default class settings implements IBotCommand{
         if(message.author.id === message.guild.owner.id){
             //undefined checks for {prefix}settings command
             if(args[0] === undefined){
-                //include a current settings embed here showing the values of available settings that can be updated, prefix, badwords, spamFilter etc
-                message.channel.send('Please provide a setting to view/update')
+                message.channel.send(`Please use ${settings.prefix}help for possible settings customizations.`).then(m => (m as Discord.Message).delete(5000))
                 return
             }
             const setting = args[0].toLowerCase()
@@ -29,20 +28,20 @@ export default class settings implements IBotCommand{
             switch(setting){
                 case 'prefix': {
                     if(!settingUpdate){
-                        message.channel.send(`Current Prefix: \`${settings.prefix}\``)
+                        message.channel.send(`Current Prefix: \`${settings.prefix}\``).then(m => (m as Discord.Message).delete(5000))
                         return;
                     }
                     try{
                         await updateGuild(message.guild, { prefix: settingUpdate })
-                        message.channel.send(`Guild Prefix has been updated to: \`${settingUpdate}\``)
+                        message.channel.send(`Guild Prefix has been updated to: \`${settingUpdate}\``).then(m => (m as Discord.Message).delete(5000))
                     }catch(err){
-                        message.channel.send(`An error occured: ${err.message}`)
+                        message.channel.send(`An error occured: ${err.message}`).then(m => (m as Discord.Message).delete(5000))
                     }
                     break;
                 }
                 case 'censor': {
                     if(!settingUpdate){
-                        message.channel.send(`Current censored words: ||${settings.badWords.join(', ')}||`)
+                        message.channel.send(`Current censored words: ||${settings.badWords.join(', ')}||`).then(m => (m as Discord.Message).delete(10000))
                         return;
                     }
                     try{
@@ -54,7 +53,7 @@ export default class settings implements IBotCommand{
                 }
                 case 'censorremove': {
                     if(!settingUpdate){
-                        message.channel.send(`Please include a currently censored word to remove. Use '${settings.prefix}settings censor' to see a list of currently censored words.`)
+                        message.channel.send(`Please include a currently censored word to remove. Use '${settings.prefix}settings censor' to see a list of currently censored words.`).then(m => (m as Discord.Message).delete(5000))
                         return;
                     }
                     try{
@@ -66,11 +65,15 @@ export default class settings implements IBotCommand{
                 }
                 case 'spamfilter': {
                     if(!settingUpdate){
-                        console.log(settings)
-                        message.channel.send(`The current spam filter for this server is ${settings.spamFilter} messages in 10 seconds`)
+                        message.channel.send(`The current spam filter for this server is ${settings.spamFilter} messages in 10 seconds`).then(m => (m as Discord.Message).delete(5000))
                         return
                     }
-                    //implement update spamfilter if setting update is provided, requires findoneandupdate
+                    try {
+                        await updateGuild(message.guild, { spamFilter: settingUpdate})
+                        message.channel.send(`Guild Spam Filter has been updated to: \`${settingUpdate}\``).then(m => (m as Discord.Message).delete(5000))
+                    } catch(err){
+                        console.log(err)
+                    }
                 }
             }
         }
