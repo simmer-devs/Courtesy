@@ -1,21 +1,18 @@
 import * as Discord from "discord.js"
 import * as ConfigFile from "./config"
+import { commands } from './Handlers/commandHandler'
 const mongoose = require('mongoose')
 const { handleEvent } = require('./Handlers/eventHandler')
 require('dotenv').config({path: '../.env'})
 
-var servers = {};
-
 //client setup
 const client: Discord.Client = new Discord.Client();
 client.login(ConfigFile.config.token)
-module.exports = {
-    client: client,
-    object: servers
-}
 
 //handle events lol
 handleEvent()
+
+let helpObject = [] as string[][]
 
 //database
 mongoose.connect(process.env.DATABASE, {
@@ -24,9 +21,17 @@ mongoose.connect(process.env.DATABASE, {
     useCreateIndex: true,
  }).then(() => {
     console.log('db connected')
+    for(const commandsClass of commands){
+        let helpArray = commandsClass.help()
+        helpObject.push(helpArray)
+    }
 }) 
 
-
+module.exports = {
+    //import name: variable name in file
+    client: client,
+    helpArray: helpObject
+}
 
 
 
