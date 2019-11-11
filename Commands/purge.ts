@@ -5,8 +5,8 @@ export default class purge implements IBotCommand{
     
     private readonly _command = "purge"
     
-    help(): string {
-        return "This command does absolutely nothing! :-)"
+    help(): string[] {
+        return [this._command,"Deletes the indicated number of messages from the text channel."]
     }    
     
     isThisCommand(command: string): boolean {
