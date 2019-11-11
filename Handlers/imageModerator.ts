@@ -5,7 +5,7 @@ const request = require('request')
 const fs = require('fs')
 const path = require('path')
 
-export const handleImageAttachment = (attachment: Discord.MessageAttachment[], guildSettings: any, guild: Discord.Guild) => {
+export const handleImageAttachment = (attachment: Discord.MessageAttachment[]/* image url to be analyzed */, guildSettings: any, guild: Discord.Guild) => {
     let modChannel = guild.channels.find(ch => ch.name === 'courtesy-log') as Discord.TextChannel
     
     const worker = createWorker()
@@ -39,10 +39,12 @@ export const handleImageAttachment = (attachment: Discord.MessageAttachment[], g
         }
         
     })
+    
     setTimeout(() => {
         worker.terminate()
         //console.log('worker terminated')
     }, 25000)
+    
 }
 
 const validateUrl = (url: string) => {
@@ -51,7 +53,7 @@ const validateUrl = (url: string) => {
 
 export const handleImageLink = async (urls: string[], guild: Discord.Guild, guildSettings: any, message: Discord.Message) => {
     let modChannel = guild.channels.find(ch => ch.name === 'courtesy-log') as Discord.TextChannel
-
+    console.log(typeof guildSettings)
     const worker = createWorker()
     urls.forEach(async url => {
         let randNum = Math.floor(Math.random()*1000000)
@@ -72,7 +74,7 @@ export const handleImageLink = async (urls: string[], guild: Discord.Guild, guil
         let {data: {text}} = await worker.recognize(image)
     
         for(const key in guildSettings.badWords){
-            if(text.includes(guildSettings.badWords[key])){
+            if(text.toLowerCase().includes(guildSettings.badWords[key])){
                 message.delete().catch(err => console.log(err))
                 let modEmbed = new Discord.RichEmbed()
                     .setColor([206, 145, 190])
