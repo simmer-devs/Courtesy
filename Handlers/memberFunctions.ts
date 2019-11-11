@@ -25,23 +25,10 @@ export const getMember = async (guild: Discord.Guild, member: Discord.GuildMembe
     else return ConfigFile.config.memberDefaultSettings
 }
 
-export const deleteMember = async (member: Discord.GuildMember) => {
-    await Member.deleteOne({userID: member.user.id, guildID: member.guild.id}).then(console.log(`Member '${member.user.tag}' settings deleted.`))
+export const deleteMember = async (guildMember: Discord.GuildMember) => {
+    await Member.deleteOne({userID: guildMember.user.id, guildID: guildMember.guild.id}).then(console.log(`Member '${guildMember.user.tag}' settings deleted.`))
 }
 
-//this works for now but needs to be improved, O(n^2) time complexity will not scale into large amounts of users well
-export const updateSpam = async (client: Discord.Client) => {
-    client.guilds.forEach(guild => {
-        guild.members.forEach(async (member: Discord.GuildMember) => {
-            const memberUpdate = {
-                spamming: []
-            }
-    
-            await Member.findOneAndUpdate(
-                {userID: member.user.id, guildID: guild.id},
-                memberUpdate
-            )
-        })
-    })
-}
+
+
 
